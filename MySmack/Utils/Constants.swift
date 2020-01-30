@@ -15,6 +15,7 @@ typealias CompletionHandler = (_ Success: Bool) -> ()
 let BASE_URL = "https://mysmacky.herokuapp.com/v1/"
 let URL_REGISTER = "\(BASE_URL)account/register"
 let URL_LOGIN = "\(BASE_URL)account/login"
+let URL_ADD_USER = "\(BASE_URL)user/add"
 
 struct AppSegues {
     static let toLogin = "toLogin"

@@ -74,7 +74,7 @@ class AuthService {
         ]
         
         Alamofire.request(URL_LOGIN, method: .post, parameters: body, encoding: JSONEncoding.default, headers: HEADER).responseJSON { (response) in
-            if response.result.error == nil { 
+            if response.result.error == nil {
                 guard let data = response.data else { return }
                 do {
                     let json = try JSON(data: data)
@@ -94,4 +94,41 @@ class AuthService {
         }
     }
     
+    func createUser(userName: String, email: String, avatarName: String, avatarColor: String, completion: @escaping CompletionHandler) {
+        
+        let lowerCaseEmail = email.lowercased()
+        
+        let body: [String: Any] = [
+            "name": userName,
+            "email": lowerCaseEmail,
+            "avatarName": avatarName,
+            "avatarColor": avatarColor,
+        ]
+        
+        let header = [
+            "Authorization": "Bearer \(authToken)",
+            "Content-Type": "application/json; charset=utf-8"
+        ]
+        
+        Alamofire.request(URL_ADD_USER, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            if response.result.error == nil {
+                guard let data = response.data else { return }
+                do {
+                    let json = try JSON(data: data)
+                    let id = json["_id"].stringValue
+                    let color = json["avatarColor"].stringValue
+                    let avatarName = json["avatarName"].stringValue
+                    let email = json["email"].stringValue
+                    let name = json["name"].stringValue
+                    UserDataService.shared.setUserData(id: id, avatarColor: color, avatarName: avatarName, email: email, name: name)
+                    completion(true)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            } else {
+                completion(false)
+                debugPrint(response.result.error as Any)
+            }
+        }
+    }
 }
