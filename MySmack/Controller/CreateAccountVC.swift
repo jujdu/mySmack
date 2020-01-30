@@ -28,7 +28,13 @@ class CreateAccountVC: UIViewController {
         
         AuthService.shared.registerUser(email: email, password: pass) { (success) in
             if success {
-                print("registered user!")
+                AuthService.shared.logInUser(email: email, password: pass) { (success) in
+                    if success {
+                        print("Login success, \(AuthService.shared.authToken)")
+                    } else {
+                        print("Login failed")
+                    }
+                }
             } else {
                 print("cannot register user")
             }
