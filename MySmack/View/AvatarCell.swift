@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum AvatarType {
+    case dark
+    case light
+}
+
 class AvatarCell: UICollectionViewCell {
     @IBOutlet weak var avatarImage: UIImageView!
     
@@ -22,4 +27,14 @@ class AvatarCell: UICollectionViewCell {
         self.clipsToBounds = true
     }
     
+    func configureCell(index: Int, type: AvatarType) {
+        switch type {
+        case .dark:
+            avatarImage.image = UIImage(named: "dark\(index)")
+            self.layer.backgroundColor = UIColor.lightGray.cgColor
+        case .light:
+            avatarImage.image = UIImage(named: "light\(index)")
+            self.layer.backgroundColor = UIColor.gray.cgColor
+        }
+    }
 }
