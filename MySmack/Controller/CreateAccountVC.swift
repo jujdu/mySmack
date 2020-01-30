@@ -18,7 +18,7 @@ class CreateAccountVC: UIViewController {
     
     //Properties
     var avatarName = "profileDefault"
-    var avatarColor = "[0.5, 0.5, 0.5, 1]"
+    var avatarColor = "[0.5, 0.5, 0.5, 1.0]"
     var bgColor: UIColor?
     
     override func viewDidLoad() {
@@ -91,6 +91,7 @@ class CreateAccountVC: UIViewController {
         let b = CGFloat(arc4random_uniform(255)) / 255
 
         bgColor = UIColor(red: r, green: g, blue: b, alpha: 1)
+        avatarColor = "[\(r), \(g), \(b), 1.0,]"
         
         UIView.animate(withDuration: 0.3) {
             self.userImg.backgroundColor = self.bgColor
