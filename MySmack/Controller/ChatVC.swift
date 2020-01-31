@@ -23,10 +23,10 @@ class ChatVC: UIViewController {
             AuthService.shared.findUserByEmail { (success) in
                 NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
             }
-        }
-        MessageService.shared.findAllChannels { (success) in
-            if success {
-                
+            MessageService.shared.findAllChannels { (success) in
+                if success {
+                    
+                }
             }
         }
     }
