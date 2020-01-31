@@ -20,7 +20,15 @@ class ChanelVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        setupUserInfo()
+    }
+    
     @objc func userDataDidChange(_ notifcation: Notification) {
+        setupUserInfo()
+    }
+    
+    func setupUserInfo() {
         if AuthService.shared.isLoggedIn {
             loginBtn.setTitle(UserDataService.shared.name, for: .normal)
             userImg.image = UIImage(named: UserDataService.shared.avatarName)
@@ -29,12 +37,20 @@ class ChanelVC: UIViewController {
         } else {
             loginBtn.setTitle("Login", for: .normal)
             userImg.image = UIImage(named: "menuProfileIcon")
-//            userImg.backgroundColor = .clear
+            userImg.backgroundColor = .clear
         }
     }
     
     @IBAction func loginBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: AppSegues.toLogin, sender: nil)
+        if AuthService.shared.isLoggedIn {
+            // show profile
+            let profile = ProfileVC()
+            profile.modalPresentationStyle = .custom
+            profile.modalTransitionStyle = .crossDissolve
+            present(profile, animated: true, completion: nil)
+        } else {
+            performSegue(withIdentifier: AppSegues.toLogin, sender: nil)
+        }
     }
     
     @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {}

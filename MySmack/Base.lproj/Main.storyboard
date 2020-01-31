@@ -188,6 +188,9 @@
                                         <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="loginPressed:" destination="2qG-b9-wOa" eventType="touchUpInside" id="WY7-A4-U4W"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="N8d-zZ-QhP">
                                 <rect key="frame" x="62.5" y="140" width="250" height="86"/>
@@ -225,16 +228,22 @@
                                     <constraint firstAttribute="width" constant="250" id="L4K-bl-6nZ"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="VnX-fM-n6P">
+                                <rect key="frame" x="169" y="215" width="37" height="37"/>
+                                <color key="color" red="0.2665456235" green="0.31722035999999998" blue="0.73996299509999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="N8d-zZ-QhP" firstAttribute="centerX" secondItem="gaD-Bd-wZo" secondAttribute="centerX" id="7Lv-GJ-JsO"/>
+                            <constraint firstItem="VnX-fM-n6P" firstAttribute="centerY" secondItem="gaD-Bd-wZo" secondAttribute="centerY" constant="-100" id="HgU-p4-a3f"/>
                             <constraint firstItem="dyF-0k-SX3" firstAttribute="top" secondItem="rqe-ci-mEv" secondAttribute="bottom" constant="3" id="L3F-Th-NMw"/>
                             <constraint firstItem="rqe-ci-mEv" firstAttribute="top" secondItem="N8d-zZ-QhP" secondAttribute="bottom" constant="40" id="MJ7-ke-qON"/>
                             <constraint firstItem="dyF-0k-SX3" firstAttribute="trailing" secondItem="rqe-ci-mEv" secondAttribute="trailing" id="Qzl-Ot-UsD"/>
                             <constraint firstItem="VAv-CP-ZAs" firstAttribute="top" secondItem="yrt-6z-2hD" secondAttribute="top" constant="20" id="Uu9-ei-rYJ"/>
                             <constraint firstItem="rqe-ci-mEv" firstAttribute="centerX" secondItem="gaD-Bd-wZo" secondAttribute="centerX" id="Xzl-Q7-5Ko"/>
                             <constraint firstItem="GxZ-TG-Omv" firstAttribute="top" secondItem="yrt-6z-2hD" secondAttribute="top" constant="60" id="Y9H-eo-IeO"/>
+                            <constraint firstItem="VnX-fM-n6P" firstAttribute="centerX" secondItem="gaD-Bd-wZo" secondAttribute="centerX" id="Zu2-RS-KEZ"/>
                             <constraint firstItem="GxZ-TG-Omv" firstAttribute="centerX" secondItem="gaD-Bd-wZo" secondAttribute="centerX" id="cIE-0f-YDZ"/>
                             <constraint firstItem="N8d-zZ-QhP" firstAttribute="top" secondItem="GxZ-TG-Omv" secondAttribute="bottom" constant="40" id="eMa-Up-hlD"/>
                             <constraint firstItem="yrt-6z-2hD" firstAttribute="trailing" secondItem="VAv-CP-ZAs" secondAttribute="trailing" constant="15" id="rAZ-CX-s6W"/>
@@ -243,6 +252,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="OOM-SN-bLt"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="VnX-fM-n6P" id="6kz-91-wSm"/>
+                        <outlet property="passwordTxt" destination="en5-4V-sYi" id="llA-J1-O4C"/>
+                        <outlet property="usernameTxt" destination="GlG-rP-kZi" id="zAR-O3-DUO"/>
                         <segue destination="ykp-JL-Ap8" kind="presentation" identifier="toCreateAccount" modalPresentationStyle="fullScreen" id="By6-H1-hcQ"/>
                     </connections>
                 </viewController>
