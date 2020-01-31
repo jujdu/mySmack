@@ -36,8 +36,12 @@ class AddChannelVC: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     @IBAction func createPressed(_ sender: Any) {
-        
-        dismiss(animated: true, completion: nil)
+        guard
+            let name = nameTxt.text, nameTxt.text != "",
+            let desc = descriptionTxt.text, descriptionTxt.text != "" else { return }
+        SocketService.shared.addChannel(channelName: name, channelDescription: desc) { (success) in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
 }

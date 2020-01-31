@@ -20,7 +20,14 @@ class ChanelVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         self.revealViewController().rearViewRevealWidth = self.view.frame.width - 60
+        
         NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+        
+        SocketService.shared.getChannel { (success) in// kak listener
+            if success {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,6 +81,7 @@ class ChanelVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "channelCell", for: indexPath) as? ChannelCell {
             let channel = MessageService.shared.channels[indexPath.row]
             cell.configureCell(channel: channel)
+            return cell
         }
         return UITableViewCell()
     }
