@@ -304,23 +304,45 @@
                                     <constraint firstItem="HhZ-eO-ind" firstAttribute="centerX" secondItem="zQd-Kq-O9x" secondAttribute="centerX" id="u6v-2L-Jh4"/>
                                 </constraints>
                             </view>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zre-ri-bUi">
+                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="wEn-pH-rjE"/>
+                                </constraints>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkC-y9-3cJ">
+                                <rect key="frame" x="337" y="632" width="30" height="30"/>
+                                <state key="normal" image="send"/>
+                                <connections>
+                                    <action selector="sendMessagePressed:" destination="0vw-QW-HnA" eventType="touchUpInside" id="D4l-jx-DEx"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="zre-ri-bUi" firstAttribute="trailing" secondItem="LS7-Pj-QXP" secondAttribute="trailing" id="26l-RE-Vhe"/>
+                            <constraint firstItem="zre-ri-bUi" firstAttribute="bottom" secondItem="LS7-Pj-QXP" secondAttribute="bottom" id="Fsj-HE-Oka"/>
                             <constraint firstItem="LS7-Pj-QXP" firstAttribute="trailing" secondItem="zQd-Kq-O9x" secondAttribute="trailing" id="MrN-If-kys"/>
                             <constraint firstItem="zQd-Kq-O9x" firstAttribute="leading" secondItem="LS7-Pj-QXP" secondAttribute="leading" id="PMQ-G2-cFB"/>
+                            <constraint firstItem="LS7-Pj-QXP" firstAttribute="trailing" secondItem="kkC-y9-3cJ" secondAttribute="trailing" constant="8" id="fn9-TD-WTc"/>
                             <constraint firstItem="zQd-Kq-O9x" firstAttribute="top" secondItem="9RG-bf-GdD" secondAttribute="top" id="pyE-Sg-aIA"/>
+                            <constraint firstItem="zre-ri-bUi" firstAttribute="leading" secondItem="LS7-Pj-QXP" secondAttribute="leading" id="yIl-kg-kg1"/>
+                            <constraint firstItem="kkC-y9-3cJ" firstAttribute="centerY" secondItem="zre-ri-bUi" secondAttribute="centerY" id="zzs-2t-y3Z"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LS7-Pj-QXP"/>
                     </view>
                     <connections>
                         <outlet property="channelNameLbl" destination="HhZ-eO-ind" id="lvn-wH-ICL"/>
                         <outlet property="menuButton" destination="xjk-in-WIY" id="EWJ-jb-9zp"/>
+                        <outlet property="messageTxt" destination="zre-ri-bUi" id="ktU-Uc-8Ch"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dcM-bW-98u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1036" y="517"/>
+            <point key="canvasLocation" x="1036" y="516.79160419790105"/>
         </scene>
         <!--Create AccountVC-->
         <scene sceneID="pMP-1c-KCd">
@@ -588,6 +610,7 @@
         <image name="closeButton" width="28" height="28"/>
         <image name="menuProfileIcon" width="99" height="99"/>
         <image name="profileDefault" width="192" height="192"/>
+        <image name="send" width="30" height="30"/>
         <image name="smackBack" width="28" height="28"/>
         <image name="smackBurger" width="40" height="40"/>
         <image name="smackLogo" width="48" height="40"/>

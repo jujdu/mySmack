@@ -14,8 +14,16 @@ class ChatVC: UIViewController {
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var channelNameLbl: UILabel!
     
+    @IBOutlet weak var messageTxt: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.bindToKeyboard()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tap)
+        
         menuButton.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
@@ -28,6 +36,10 @@ class ChatVC: UIViewController {
                 NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
             }
         }
+    }
+    
+    @objc func handleTap() {
+        view.endEditing(true)
     }
     
     @objc func userDataDidChange(_ notifcation: Notification) {
@@ -46,10 +58,41 @@ class ChatVC: UIViewController {
     func updateWithChannel() {
         let channelName = MessageService.shared.selectedChannel?.channelTitle ?? ""
         channelNameLbl.text = "#\(channelName)"
+        getMessages()
     }
+    
+    @IBAction func sendMessagePressed(_ sender: Any) {
+        if AuthService.shared.isLoggedIn {
+            guard
+                let channelId = MessageService.shared.selectedChannel?.id,
+                let message = messageTxt.text else { return }
+            
+            SocketService.shared.addMessage(messageBode: message, userId: UserDataService.shared.id, channelId: channelId) { (success) in
+                if success {
+                    self.messageTxt.text = ""
+                    self.messageTxt.resignFirstResponder()
+                }
+            }
+        }
+    }
+    
 
     func onLoginGetMessages() {
         MessageService.shared.findAllChannels { (success) in
+            if success {
+                if MessageService.shared.channels.count > 0 {
+                    MessageService.shared.selectedChannel = MessageService.shared.channels.first
+                    self.updateWithChannel()
+                } else {
+                    self.channelNameLbl.text = "No channels yet"
+                }
+            }
+        }
+    }
+    
+    func getMessages() {
+        guard let channelId = MessageService.shared.selectedChannel?.id else { return }
+        MessageService.shared.findAllMessagesForChannel(channelId: channelId) { (success) in
             if success {
                 
             }
