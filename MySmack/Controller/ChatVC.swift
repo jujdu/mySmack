@@ -8,16 +8,22 @@
 
 import UIKit
 
-class ChatVC: UIViewController {
+class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     //MARK: @IBOutlets
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var channelNameLbl: UILabel!
-    
     @IBOutlet weak var messageTxt: UITextField!
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.estimatedRowHeight = 80
+        tableView.rowHeight = UITableView.automaticDimension
         
         view.bindToKeyboard()
         
@@ -94,8 +100,20 @@ class ChatVC: UIViewController {
         guard let channelId = MessageService.shared.selectedChannel?.id else { return }
         MessageService.shared.findAllMessagesForChannel(channelId: channelId) { (success) in
             if success {
-                
+                self.tableView.reloadData()
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return MessageService.shared.messages.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as? MessageCell {
+            cell.configureCell(message: MessageService.shared.messages[indexPath.row])
+            return cell
+        }
+        return UITableViewCell()
     }
 }
