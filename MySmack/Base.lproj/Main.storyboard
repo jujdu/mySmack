@@ -314,6 +314,7 @@
                         <viewLayoutGuide key="safeArea" id="LS7-Pj-QXP"/>
                     </view>
                     <connections>
+                        <outlet property="channelNameLbl" destination="HhZ-eO-ind" id="lvn-wH-ICL"/>
                         <outlet property="menuButton" destination="xjk-in-WIY" id="EWJ-jb-9zp"/>
                     </connections>
                 </viewController>

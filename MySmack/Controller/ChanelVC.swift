@@ -22,6 +22,7 @@ class ChanelVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.revealViewController().rearViewRevealWidth = self.view.frame.width - 60
         
         NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(channelsLoaded(_:)), name: NOTIF_CHANNELS_LOADED, object: nil)
         
         SocketService.shared.getChannel { (success) in// kak listener
             if success {
@@ -43,12 +44,16 @@ class ChanelVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             loginBtn.setTitle(UserDataService.shared.name, for: .normal)
             userImg.image = UIImage(named: UserDataService.shared.avatarName)
             userImg.backgroundColor = UserDataService.shared.returnUIColor(components: UserDataService.shared.avatarColor)
-            print(UserDataService.shared.returnUIColor(components: UserDataService.shared.avatarColor))
         } else {
             loginBtn.setTitle("Login", for: .normal)
             userImg.image = UIImage(named: "menuProfileIcon")
             userImg.backgroundColor = .clear
+            tableView.reloadData()
         }
+    }
+    
+    @objc func channelsLoaded(_ notifcation: Notification) {
+        tableView.reloadData()
     }
     
     @IBAction func loginBtnPressed(_ sender: Any) {
@@ -64,10 +69,12 @@ class ChanelVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     @IBAction func addChannelPressed(_ sender: Any) {
-        let addChannelVC = AddChannelVC()
-        addChannelVC.modalPresentationStyle = .overFullScreen
-        addChannelVC.modalTransitionStyle = .crossDissolve
-        present(addChannelVC, animated: true, completion: nil)
+        if AuthService.shared.isLoggedIn {
+            let addChannelVC = AddChannelVC()
+            addChannelVC.modalPresentationStyle = .overFullScreen
+            addChannelVC.modalTransitionStyle = .crossDissolve
+            present(addChannelVC, animated: true, completion: nil)            
+        }
     }
     
     
@@ -84,5 +91,12 @@ class ChanelVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        MessageService.shared.selectedChannel = MessageService.shared.channels[indexPath.row]
+        NotificationCenter.default.post(name: NOTIF_CHANNEL_SELECTED, object: nil)
+        
+        self.revealViewController().revealToggle(animated: true)
     }
 }
