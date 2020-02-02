@@ -15,9 +15,15 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var channelNameLbl: UILabel!
     @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sendBtn: UIButton!
+    @IBOutlet weak var typingUsersLbl: UILabel!
+    
+    var isTyping = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sendBtn.isHidden = true
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -37,6 +43,56 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(channelSelected(_:)), name: NOTIF_CHANNEL_SELECTED, object: nil)
         
+        SocketService.shared.getChatMessage { (newMessage) in
+            if newMessage.channelId == MessageService.shared.selectedChannel?.id && AuthService.shared.isLoggedIn {
+                MessageService.shared.messages.append(newMessage)
+                self.tableView.reloadData()
+                if MessageService.shared.messages.count > 0 {
+                    let indexPath = IndexPath(row: MessageService.shared.messages.count - 1, section: 0)
+                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                }
+            }
+        }
+        
+//        SocketService.shared.getChatMessage { (success) in
+//            if success {
+//                self.tableView.reloadData()
+//                if MessageService.shared.messages.count > 0 {
+//                    let indexPath = IndexPath(row: MessageService.shared.messages.count - 1, section: 0)
+//                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+//                }
+//            }
+//        }
+        
+        SocketService.shared.getTypingUsers { (typingUsers) in
+            guard let channelId = MessageService.shared.selectedChannel?.id else { return }
+            
+            var names = ""
+            var numberOfTypers = 0
+            print(typingUsers)
+            for (typingUser, channel) in typingUsers {
+                if typingUser != UserDataService.shared.name && channel == channelId {
+                    if names == "" {
+                        names = typingUser
+                    } else {
+                        names = "\(names), \(typingUser)"
+                    }
+                    numberOfTypers += 1
+                }
+            }
+            
+            if numberOfTypers > 0 && AuthService.shared.isLoggedIn {
+                var verb = "is"
+                if numberOfTypers > 1 {
+                    verb = "are"
+                }
+                
+                self.typingUsersLbl.text = "\(names) \(verb) typing a message"
+            } else {
+                self.typingUsersLbl.text = ""
+            }
+        }
+        
         if AuthService.shared.isLoggedIn {
             AuthService.shared.findUserByEmail { (success) in
                 NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
@@ -54,6 +110,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             onLoginGetMessages()
         } else {
             channelNameLbl.text = "Please Log In"
+            tableView.reloadData()
         }
     }
     
@@ -67,6 +124,22 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         getMessages()
     }
     
+    
+    @IBAction func messageBoxEditing(_ sender: Any) {
+        guard let channelId = MessageService.shared.selectedChannel?.id else { return }
+        if messageTxt.text == "" {
+            isTyping = false
+            sendBtn.isHidden = true
+            SocketService.shared.socket.emit("stopType", UserDataService.shared.name, channelId)
+        } else {
+            if isTyping == false {
+                sendBtn.isHidden = false
+                SocketService.shared.socket.emit("startType", UserDataService.shared.name, channelId)
+            }
+            isTyping = true
+        }
+    }
+    
     @IBAction func sendMessagePressed(_ sender: Any) {
         if AuthService.shared.isLoggedIn {
             guard
@@ -77,6 +150,8 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 if success {
                     self.messageTxt.text = ""
                     self.messageTxt.resignFirstResponder()
+                    SocketService.shared.socket.emit("stopType", UserDataService.shared.name, channelId)
+                    self.isTyping = false
                 }
             }
         }
@@ -104,6 +179,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MessageService.shared.messages.count

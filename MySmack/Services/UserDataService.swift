@@ -69,5 +69,6 @@ class UserDataService {
         AuthService.shared.authToken = ""
         AuthService.shared.userEmail = ""
         MessageService.shared.clearChannels()
+        MessageService.shared.clearMessages()
     }
 }

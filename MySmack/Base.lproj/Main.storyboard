@@ -312,6 +312,9 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="messageBoxEditing:" destination="0vw-QW-HnA" eventType="editingChanged" id="iQO-LY-gxX"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkC-y9-3cJ">
                                 <rect key="frame" x="337" y="632" width="30" height="30"/>
@@ -379,16 +382,24 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Heu-ON-9Hi">
+                                <rect key="frame" x="8" y="621" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="zre-ri-bUi" firstAttribute="trailing" secondItem="LS7-Pj-QXP" secondAttribute="trailing" id="26l-RE-Vhe"/>
+                            <constraint firstItem="zre-ri-bUi" firstAttribute="top" secondItem="Heu-ON-9Hi" secondAttribute="bottom" constant="6" id="9Y9-8B-Ueg"/>
                             <constraint firstItem="LS7-Pj-QXP" firstAttribute="trailing" secondItem="aiq-az-cP3" secondAttribute="trailing" id="D10-kX-6zB"/>
                             <constraint firstItem="zre-ri-bUi" firstAttribute="bottom" secondItem="LS7-Pj-QXP" secondAttribute="bottom" id="Fsj-HE-Oka"/>
                             <constraint firstItem="LS7-Pj-QXP" firstAttribute="trailing" secondItem="zQd-Kq-O9x" secondAttribute="trailing" id="MrN-If-kys"/>
                             <constraint firstItem="zQd-Kq-O9x" firstAttribute="leading" secondItem="LS7-Pj-QXP" secondAttribute="leading" id="PMQ-G2-cFB"/>
                             <constraint firstItem="aiq-az-cP3" firstAttribute="top" secondItem="zQd-Kq-O9x" secondAttribute="bottom" id="VJ3-bk-VXT"/>
                             <constraint firstItem="zre-ri-bUi" firstAttribute="top" secondItem="aiq-az-cP3" secondAttribute="bottom" constant="30" id="WtN-Jh-SyI"/>
+                            <constraint firstItem="Heu-ON-9Hi" firstAttribute="leading" secondItem="LS7-Pj-QXP" secondAttribute="leading" constant="8" id="Zr1-dq-Ee8"/>
                             <constraint firstItem="LS7-Pj-QXP" firstAttribute="trailing" secondItem="kkC-y9-3cJ" secondAttribute="trailing" constant="8" id="fn9-TD-WTc"/>
                             <constraint firstItem="aiq-az-cP3" firstAttribute="leading" secondItem="LS7-Pj-QXP" secondAttribute="leading" id="i1p-Ck-PlF"/>
                             <constraint firstItem="zQd-Kq-O9x" firstAttribute="top" secondItem="9RG-bf-GdD" secondAttribute="top" id="pyE-Sg-aIA"/>
@@ -401,7 +412,9 @@
                         <outlet property="channelNameLbl" destination="HhZ-eO-ind" id="lvn-wH-ICL"/>
                         <outlet property="menuButton" destination="xjk-in-WIY" id="EWJ-jb-9zp"/>
                         <outlet property="messageTxt" destination="zre-ri-bUi" id="ktU-Uc-8Ch"/>
+                        <outlet property="sendBtn" destination="kkC-y9-3cJ" id="uLW-xl-J5J"/>
                         <outlet property="tableView" destination="aiq-az-cP3" id="AG6-SB-jP7"/>
+                        <outlet property="typingUsersLbl" destination="Heu-ON-9Hi" id="zAg-FF-SeK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dcM-bW-98u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -501,7 +514,7 @@
                                         <rect key="frame" x="88" y="100" width="74.5" height="20"/>
                                         <color key="textColor" red="0.25882352939999997" green="0.3294117647" blue="0.72549019609999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qxz-MV-mop">
                                         <rect key="frame" x="0.0" y="134" width="250" height="2"/>
